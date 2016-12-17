@@ -35,4 +35,4 @@ add_library( FijeeMesh ${Fijee_H} ${HEADERS} ${SOURCES} ${CUDA_SOURCES_} )
 # Add FijeeUtils target libraries
 target_link_libraries( FijeeMesh ${VTK_LIBRARIES} ${CUDA_LIBRARIES} )
 # Install
-install( TARGETS FijeeMesh EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+install( TARGETS FijeeMesh EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )

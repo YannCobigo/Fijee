@@ -49,4 +49,4 @@ add_library( FijeeFEM ${Fijee_H} ${HEADERS} ${UFL_HEADERS} ${SOURCES} )
 # Add FijeeUtils target libraries
 target_link_libraries( FijeeFEM ${Fijee_TARGET_LINK_LIBRARIES} ${DOLFIN_LIBRARIES} )
 # Install
-install( TARGETS FijeeFEM EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+install( TARGETS FijeeFEM EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )

@@ -25,4 +25,4 @@ add_library( FijeeElectrodes ${Fijee_H} ${HEADERS} ${SOURCES} )
 # Add FijeeUtils target libraries
 target_link_libraries( FijeeElectrodes ${Fijee_TARGET_LINK_LIBRARIES} )
 # Install
-install( TARGETS FijeeElectrodes EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+install( TARGETS FijeeElectrodes EXPORT FijeeTargets LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
