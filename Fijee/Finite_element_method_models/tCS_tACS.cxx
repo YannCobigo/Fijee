@@ -115,6 +115,8 @@ Solver::tCS_tACS::operator () ( /*Solver::Phi& source,
   //  //
   //  // PDE boundary conditions
   //  DirichletBC bc(*V_, *(electrodes_->get_current(0)), *boundaries_, 101);
+  std::vector<std::shared_ptr<const DirichletBC>> bc;
+
 
   //
   // Define variational forms
@@ -124,19 +126,25 @@ Solver::tCS_tACS::operator () ( /*Solver::Phi& source,
   //
   // Anisotropy
   // Bilinear
-  a.a_sigma  = *sigma_;
+  a.a_sigma  = sigma_;
   // a.dx       = *domains_;
   
   
   // Linear
-  L.I  = *( electrodes_->get_current(local_sample) );
-  L.ds = *boundaries_;
+  L.I  = electrodes_->get_current(local_sample);
+  L.ds = boundaries_;
 
   //
   // Compute solution
-  Function u(*V_);
-  LinearVariationalProblem problem(a, L, u/*, bc*/);
-  LinearVariationalSolver  solver(problem);
+  Function u(V_);
+//  LinearVariationalProblem problem(a, L, u, bc);
+//  LinearVariationalSolver  solver(problem);
+  LinearVariationalProblem problem(std::shared_ptr<const dolfin::Form> (&a),
+                                   std::shared_ptr<const dolfin::Form> (&L),
+                                   std::shared_ptr<dolfin::Function> (&u),
+                                   bc);
+  LinearVariationalSolver solver( (std::shared_ptr<LinearVariationalProblem> (&problem)) );
+
   // krylov
   solver.parameters["linear_solver"]  
     = (SDEsp::get_instance())->get_linear_solver_();
@@ -257,15 +265,23 @@ Solver::tCS_tACS::operator () ( /*Solver::Phi& source,
       
       
       // Linear
-      L_field.u       = u;
-      L_field.a_sigma = *sigma_;
+      L_field.u       = std::shared_ptr<const GenericFunction> (&u);
+      L_field.a_sigma = sigma_;
       //  L.ds = *boundaries_;
       
       //
       // Compute solution
-      Function J(*V_current_density_);
-      LinearVariationalProblem problem_field(a_field, L_field, J/*, bc*/);
-      LinearVariationalSolver  solver_field(problem_field);
+      Function J(V_current_density_);
+//      LinearVariationalProblem problem_field(a_field, L_field, J/*, bc*/);
+//      LinearVariationalSolver  solver_field(problem_field);
+
+      LinearVariationalProblem problem_field(std::shared_ptr<const dolfin::Form> (&a_field),
+                                       std::shared_ptr<const dolfin::Form> (&L_field),
+                                       std::shared_ptr<dolfin::Function> (&J),
+                                       bc);
+      LinearVariationalSolver solver_field( (std::shared_ptr<LinearVariationalProblem> (&problem)) );
+
+
       // krylov
       solver_field.parameters["linear_solver"]  
 	= (SDEsp::get_instance())->get_linear_solver_();
@@ -334,15 +350,22 @@ Solver::tCS_tACS::operator () ( /*Solver::Phi& source,
       
       
       // Linear
-      L_E.u  = u;
+      L_E.u  = std::shared_ptr<const GenericFunction> (&u);
       //      L_Er.a_sigma = *sigma_;
       //       L.ds = *boundaries_;
       
       //
       // Compute solution
-      Function E(*V_E_);
-      LinearVariationalProblem problem_E(a_E, L_E, E/*, bc*/);
-      LinearVariationalSolver  solver_E(problem_E);
+      Function E(V_E_);
+//      LinearVariationalProblem problem_E(a_E, L_E, E/*, bc*/);
+//      LinearVariationalSolver  solver_E(problem_E);
+
+      LinearVariationalProblem problem_E(std::make_shared<const Form> (a_E),
+                               std::make_shared<const Form> (L_E),
+                               std::make_shared<Function> (E),
+                               bc);
+      LinearVariationalSolver  solver_E(std::make_shared<LinearVariationalProblem> (problem_E));
+
       // krylov
       solver_E.parameters["linear_solver"]  
 	= (SDEsp::get_instance())->get_linear_solver_();

@@ -36,13 +36,13 @@ Solver::SL_direct::SL_direct():Physics()
 {
   //
   // Define the function space
-  V_.reset( new SLD_model::FunctionSpace(*mesh_) );
+  V_.reset( new SLD_model::FunctionSpace(mesh_) );
   
   //
   // Define boundary condition
   perifery_.reset( new Periphery() );
   // Initialize mesh function for boundary domains. We tag the boundaries
-  boundaries_.reset( new FacetFunction< size_t > (*mesh_) );
+  boundaries_.reset( new FacetFunction< size_t > (mesh_) );
   boundaries_->set_all(0);
   perifery_->mark(*boundaries_, 1);
 
@@ -155,6 +155,7 @@ Solver::SL_direct::operator () ( /*Solver::Phi& source,
 //  //
 //  // Define Dirichlet boundary conditions 
 //  DirichletBC boundary_conditions(*V, source, perifery);
+  std::vector<std::shared_ptr<const DirichletBC>> bc;
 
 
   ///////////////////////////////////////////////
@@ -163,26 +164,32 @@ Solver::SL_direct::operator () ( /*Solver::Phi& source,
       
   //
   // Define variational forms
-  SLD_model::BilinearForm a(*V_, *V_);
-  SLD_model::LinearForm L(*V_);
+  SLD_model::BilinearForm a(V_, V_);
+  SLD_model::LinearForm L(V_);
       
   //
   // Anisotropy
   // Bilinear
-  a.a_sigma  = *sigma_;
-  a.dx       = *domains_;
+  a.a_sigma  = sigma_;
+  a.dx       = domains_;
   // Linear
-  L.J_source = source;
+  L.J_source = std::make_shared<Current_density>(source);
   //
-  L.dx       = *domains_;
-  L.ds       = *boundaries_;
+  L.dx       = domains_;
+  L.ds       = boundaries_;
 
   //
   // Compute solution
   Function u(V_);
   //
-  LinearVariationalProblem problem(a, L, u);
-  LinearVariationalSolver  solver(problem);
+//  LinearVariationalProblem problem(a, L, u);
+//  LinearVariationalSolver  solver(problem);
+  LinearVariationalProblem problem(std::shared_ptr<const dolfin::Form> (&a),
+                                   std::shared_ptr<const dolfin::Form> (&L),
+                                   std::shared_ptr<dolfin::Function> (&u),
+                                   bc);
+  LinearVariationalSolver solver( (std::shared_ptr<LinearVariationalProblem> (&problem)) );
+
   // krylov
   solver.parameters["linear_solver"]  
     = (SDEsp::get_instance())->get_linear_solver_();

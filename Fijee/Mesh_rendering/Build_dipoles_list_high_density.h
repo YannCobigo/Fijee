@@ -80,7 +80,7 @@ namespace Domains
     typedef Dipole_position value_type;
     typedef const value_type& reference;
     typedef const High_density_key_type& key_type;
-    typedef boost::readable_property_map_tag category;
+    typedef boost::lvalue_property_map_tag category;
   };
   // get function for the property map
   Point_vector_high_density_map::reference 
@@ -99,7 +99,7 @@ namespace Domains
     typedef Dipole_position value_type;
     typedef const value_type& reference;
     typedef const Parcellation_key_type& key_type;
-    typedef boost::readable_property_map_tag category;
+    typedef boost::lvalue_property_map_tag category;
   };
   // get function for the property map
   Point_vector_parcellation_map::reference 

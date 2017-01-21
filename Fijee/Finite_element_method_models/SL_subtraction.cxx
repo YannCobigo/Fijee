@@ -46,7 +46,7 @@ Solver::SL_subtraction::SL_subtraction():Physics()
   // Define boundary condition
   Periphery perifery;
   // Initialize mesh function for boundary domains. We tag the boundaries
-  boundaries_.reset( new FacetFunction< size_t > (*mesh_) );
+  boundaries_.reset(new FacetFunction< size_t >(mesh_));
   boundaries_->set_all(0);
   perifery.mark(*boundaries_, 1);
 
@@ -163,7 +163,7 @@ Solver::SL_subtraction::operator () ( /*Solver::Phi& source,
 	    //
 	    // Anisotropy conductivity
 	    // Bilinear form
-	    a_->a_sigma = *sigma_;
+			a_->a_sigma = sigma_;
 	    //  a.dx      = *domains_;
 	    //
 	    A_.reset( new Matrix() );
@@ -202,9 +202,9 @@ Solver::SL_subtraction::operator () ( /*Solver::Phi& source,
   Vector L_;
 
   // Linear
-  L.a_inf   =  a_inf;
-  L.a_sigma = *sigma_;
-  L.Phi_0   =  source;
+  L.a_inf   =  std::make_shared<Sigma_isotrope>(a_inf);
+  L.a_sigma = sigma_;
+  L.Phi_0   =  std::make_shared<Phi>(source);
   //
   //  L.dx    = *domains_;
   //  L.ds    = *boundaries_;
