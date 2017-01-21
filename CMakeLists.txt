@@ -181,7 +181,7 @@ endif()
 
 #
 # CGAL
-find_package(CGAL 4.3 REQUIRED)
+find_package(CGAL REQUIRED)
 #
 if(CGAL_FOUND)
   message( STATUS "CGAL found ${CGAL_DIR}" )
