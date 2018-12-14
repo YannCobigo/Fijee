@@ -332,7 +332,7 @@ Domains_Head_labeled::model_segmentation()
   SPM_bones.read( (DAp::get_instance())->get_sc4T1_() );
   Image_filter spm_bones( SPM_bones, data_position_ );
   spm_bones.init( 5 /* % of outliers to remove */,
-		  85 /* % of the signal */);
+          85 /* % of the signal */);
   //  spm_bones.holes_detection();
   std::thread bones_thread( std::ref(spm_bones) );
 
