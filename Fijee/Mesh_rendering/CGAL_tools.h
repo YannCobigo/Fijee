@@ -72,7 +72,7 @@ namespace Domains
     typedef Point_3 value_type;
     typedef const value_type& reference;
     typedef const std::tuple< Point_3, int >& key_type;
-    typedef boost::readable_property_map_tag category;
+    typedef boost::lvalue_property_map_tag category;
   };
   // get function for the property map
   Position_property_map::reference 

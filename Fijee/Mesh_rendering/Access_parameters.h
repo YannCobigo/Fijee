@@ -61,7 +61,7 @@
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef CGAL::Point_with_normal_3<Kernel> Point_with_normal;
 
-typedef CGAL::Search_traits<float, Domains::Point_vector, const float*, Construct_coord_iterator> TreeTraits;
+typedef CGAL::Search_traits<float, Domains::Point_vector, const float*, Construct_coord_iterator, Domains::Distance::D> TreeTraits;
 typedef CGAL::Orthogonal_k_neighbor_search<TreeTraits, Domains::Distance > Neighbor_search;
 typedef Neighbor_search::iterator NN_iterator;
 typedef Neighbor_search::Tree Tree;

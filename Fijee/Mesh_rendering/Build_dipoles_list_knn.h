@@ -73,7 +73,7 @@ namespace Domains
     typedef Dipole_position value_type;
     typedef const value_type& reference;
     typedef const Key_type& key_type;
-    typedef boost::readable_property_map_tag category;
+    typedef boost::lvalue_property_map_tag category;
   };
   // get function for the property map
   Point_vector_property_map::reference 

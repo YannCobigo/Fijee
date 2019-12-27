@@ -186,7 +186,7 @@ Solver::tCS_tDCS_local_conductivity::operator ()( )
 //  //  // Define Dirichlet boundary conditions 
 //  //  DirichletBC boundary_conditions(*V, source, perifery);
 
-  // 
+  //
   // Initialize the simplex
   for( auto vertex = simplex_.begin() ; vertex != simplex_.end() ; vertex++ )
     {
@@ -218,6 +218,8 @@ Solver::tCS_tDCS_local_conductivity::operator ()( const Eigen::Vector3d& A){retu
 double
 Solver::tCS_tDCS_local_conductivity::solve( const Eigen::Vector3d& Vertex )
 {
+  std::vector<std::shared_ptr<const DirichletBC>> bc;
+
   // 
   // Update the conductivity
   sigma_->conductivity_update( domains_, Vertex );
@@ -234,19 +236,24 @@ Solver::tCS_tDCS_local_conductivity::solve( const Eigen::Vector3d& Vertex )
   //
   // Anisotropy
   // Bilinear
-  a.a_sigma  = *sigma_;
+  a.a_sigma  = sigma_;
   // a.dx       = *domains_;
   
   
   // Linear
-  L.I  = *(electrodes_->get_current(0));
-  L.ds = *boundaries_;
+  L.I  = electrodes_->get_current(0);
+  L.ds = boundaries_;
 
   //
   // Compute solution
-  Function u(*V_);
-  LinearVariationalProblem problem(a, L, u/*, bc*/);
-  LinearVariationalSolver  solver(problem);
+  Function u(V_);
+//  LinearVariationalProblem problem(a, L, u/*, bc*/);
+//  LinearVariationalSolver  solver(problem);
+  LinearVariationalProblem problem(std::shared_ptr<const dolfin::Form> (&a),
+                                   std::shared_ptr<const dolfin::Form> (&L),
+                                   std::shared_ptr<dolfin::Function> (&u),
+                                   bc);
+  LinearVariationalSolver solver( (std::shared_ptr<LinearVariationalProblem> (&problem)) );
   // krylov
   solver.parameters["linear_solver"]  
     = (SDEsp::get_instance())->get_linear_solver_();

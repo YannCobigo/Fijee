@@ -105,7 +105,10 @@ endif()
 
 #
 # VTK
-find_package(VTK 5.10 REQUIRED NO_MODULE)
+find_package(VTK 6 NO_MODULE)
+if(NOT VTK_FOUND)
+  find_package(VTK 5.10 REQUIRED NO_MODULE)
+endif()
 if(VTK_FOUND)
   message(STATUS "VTK found ${VTK_DIR}")
   include(${VTK_USE_FILE})
@@ -135,11 +138,11 @@ endif()
 
 #
 # Eigen
-find_package(EIGEN 3.0 REQUIRED)
-#
-if(EIGEN_FOUND)
+find_package(Eigen3 REQUIRED)
+if(EIGEN3_FOUND)
   message(STATUS "eigen found ${EIGEN_DIR} ${EIGEN_INCLUDE_DIR}")
-  include_directories(${EIGEN_INCLUDE_DIR})
+#  include_directories(${EIGEN3_INCLUDE_DIR})
+#  include( ${EIGEN3_USE_FILE} ) 
 else()
    message(STATUS "eigen not found")
 endif()
@@ -178,7 +181,7 @@ endif()
 
 #
 # CGAL
-find_package(CGAL 4.3 REQUIRED)
+find_package(CGAL REQUIRED)
 #
 if(CGAL_FOUND)
   message( STATUS "CGAL found ${CGAL_DIR}" )
@@ -187,6 +190,15 @@ if(CGAL_FOUND)
 #  include( ${CGAL_USE_FILE} )
 else()
   message( STATUS "CGAL not found" )
+endif()
+
+#
+# GSL
+find_package(GSL REQUIRED)
+if(GSL_FOUND)
+  message(STATUS "GSL found ${GSL_DIR}")
+else()
+  message(STATUS "GSL not found")
 endif()
 
 #

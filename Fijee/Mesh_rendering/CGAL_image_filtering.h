@@ -328,7 +328,7 @@ namespace Domains
 	      //
 	      int idx = i + j*256 + k*256*256;
 	      //
-	      int value = static_cast<int>( r_im_.labellized_trilinear_interpolation(positions_[idx][0],
+          int value = static_cast<int>( r_im_.template labellized_trilinear_interpolation<word_type>(positions_[idx][0],
 										     positions_[idx][1],
 										     positions_[idx][2],
 										     word_type(0)) );

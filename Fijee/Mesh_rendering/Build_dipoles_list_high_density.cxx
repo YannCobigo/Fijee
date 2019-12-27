@@ -128,11 +128,11 @@ DBdlhd::Make_list( const std::list< Cell_conductivity >& List_cell_conductivity 
   // Computes average spacing.
   const unsigned int nb_neighbors = 6; // 1 ring
   // 
-  FT lh_average_spacing = CGAL::compute_average_spacing(lh_wm_points.begin(), lh_wm_points.end(),
+  FT lh_average_spacing = CGAL::compute_average_spacing<CGAL::Sequential_tag>(lh_wm_points.begin(), lh_wm_points.end(),
 							CGAL::Nth_of_tuple_property_map<1,IndexedPointVector>(),
 							nb_neighbors);
   // 
-  FT rh_average_spacing = CGAL::compute_average_spacing(rh_wm_points.begin(), rh_wm_points.end(),
+  FT rh_average_spacing = CGAL::compute_average_spacing<CGAL::Sequential_tag>(rh_wm_points.begin(), rh_wm_points.end(),
 							CGAL::Nth_of_tuple_property_map<1,IndexedPointVector>(),
 							nb_neighbors);
   // 

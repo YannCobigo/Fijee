@@ -81,7 +81,7 @@ Solver::Physics::Physics()
   std::string facets_collection_xml = (SDEsp::get_instance())->get_files_path_output_();
   facets_collection_xml += "mesh_facets_subdomains.xml";
   //
-  mesh_facets_collection_.reset( new MeshValueCollection< std::size_t > (*mesh_, facets_collection_xml) );
+  mesh_facets_collection_.reset( new MeshValueCollection< std::size_t > (mesh_, facets_collection_xml) );
 
   //
   // MeshDataCollection methode

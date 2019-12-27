@@ -295,9 +295,9 @@ Solver::Spheres_electric_monopole::Spheres_electric_monopole(const Spheres_elect
   r0_values_ = that.r0_values_;
   //
   std::copy(that.r_sphere_, that.r_sphere_ + NUM_SPHERES, r_sphere_);
-  std::copy(that.sigma_, that.sigma_ + NUM_SPHERES, sigma_);
+  std::copy((double*)that.sigma_, ((double*)that.sigma_) + NUM_SPHERES * 2, (double*)sigma_);
   //
-  std::copy(that.nu_, that.nu_ + NUM_ITERATIONS, nu_);
+  std::copy((double*)that.nu_, ((double*)that.nu_) + NUM_ITERATIONS * NUM_SPHERES, (double*)nu_);
   std::copy(that.R_coeff_, that.R_coeff_ + NUM_ITERATIONS, R_coeff_);
   //
   for ( int n = 0 ; n < NUM_ITERATIONS ; n++ )
@@ -531,9 +531,9 @@ Solver::Spheres_electric_monopole::operator =( const Spheres_electric_monopole& 
   r0_values_ = that.r0_values_;
   //
   std::copy(that.r_sphere_, that.r_sphere_ + NUM_SPHERES, r_sphere_);
-  std::copy(that.sigma_, that.sigma_ + NUM_SPHERES, sigma_);
+  std::copy((double*)that.sigma_, ((double*)that.sigma_) + NUM_SPHERES * 2, (double*)sigma_);
   //
-  std::copy(that.nu_, that.nu_ + NUM_ITERATIONS, nu_);
+  std::copy((double*)that.nu_, ((double*)that.nu_) + NUM_ITERATIONS * NUM_SPHERES, (double*)nu_);
   std::copy(that.R_coeff_, that.R_coeff_ + NUM_ITERATIONS, R_coeff_);
   //
   for ( int n = 0 ; n < NUM_ITERATIONS ; n++ )
